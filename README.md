@@ -37,7 +37,7 @@ wget http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%
 
 cd ./yolov9_special_course/new_data/
 
-unzip *.zip -d . 
+./script.sh
 ```
 
 
