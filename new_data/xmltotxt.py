@@ -11,6 +11,7 @@ class_map = {
     'fishing boat': 5,
     'passenger ship': 6
 }
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
 def convert_xml_folder_to_yolo(xml_folder, output_folder):
     os.makedirs(output_folder, exist_ok=True)
@@ -55,6 +56,7 @@ def convert_xml_folder_to_yolo(xml_folder, output_folder):
         print(f"[OK] {xml_file} -> {txt_filename}")
 
 # Convert datasets
-convert_xml_folder_to_yolo('./train', 'train_labels')
-convert_xml_folder_to_yolo('./val', 'val_labels')
-convert_xml_folder_to_yolo('./test', 'test_labels')
+convert_xml_folder_to_yolo(script_dir + '/train', script_dir +'/train_labels')
+convert_xml_folder_to_yolo(script_dir + '/val', script_dir +'/val_labels')
+convert_xml_folder_to_yolo(script_dir + '/test', script_dir +'/test_labels')
+

@@ -34,6 +34,10 @@ wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-c-conver
 wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-t-converted.pt -O ./yolov9_special_course/weights/yolov9-t.pt
 
 wget http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip -O ./yolov9_special_course/new_data/Seaships.zip 
+
+cd ./yolov9_special_course/new_data/
+
+unzip *.zip -d . 
 ```
 
 
