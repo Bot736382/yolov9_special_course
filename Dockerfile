@@ -21,6 +21,8 @@ WORKDIR /yolov9
 # RUN wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-t-converted.pt \
     # -O /weights/yolov9-t.pt
 
+RUN wget http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip \
+    -O /new_data/Seaships.zip 
 
 COPY yolov9_special_course /yolov9
 
