@@ -1,6 +1,6 @@
-train: /CV/yolov9/new_data/images/train
-val: /CV/yolov9/new_data/images/val
-test: /CV/yolov9/new_data/images/test
+train: ./new_data/images/train
+val: ./new_data/images/val
+test: ./new_data/images/test
 
 nc: 7  # number of classes
 names: ['ore carrier', 'general cargo ship', 'bulk cargo ship', 'container ship', 'bulk cargo carrier', 'fishing boat', 'passenger ship']
