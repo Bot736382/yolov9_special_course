@@ -15,11 +15,11 @@ RUN pip install \
 # Change the working directory to YOLOv9
 WORKDIR /yolov9
 
-RUN wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-c-converted.pt \
-    -O /weights/yolov9-c-converted.pt
+# RUN wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-c-converted.pt \
+#     -O /weights/yolov9-c-converted.pt
 
-RUN wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-t-converted.pt \
-    -O /weights/yolov9-t.pt
+# RUN wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-t-converted.pt \
+    # -O /weights/yolov9-t.pt
 
 
 COPY yolov9_special_course /yolov9
