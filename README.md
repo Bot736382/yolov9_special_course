@@ -29,11 +29,11 @@ Install these Models into the ``./weights/`` folder within the system and use Mo
 
 Install the Models: yolov9-c-converted, yolov9-t-converted and the [SeaShips Dataset](http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip)
 ```
-wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-c-converted.pt -O ./weights/yolov9-c-converted.pt
+wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-c-converted.pt -O ./yolov9_special_course/weights/yolov9-c-converted.pt
 
-wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-t-converted.pt -O ./weights/yolov9-t.pt
+wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-t-converted.pt -O ./yolov9_special_course/weights/yolov9-t.pt
 
-wget http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip -O ./new_data/Seaships.zip 
+wget http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip -O ./yolov9_special_course/new_data/Seaships.zip 
 ```
 
 
