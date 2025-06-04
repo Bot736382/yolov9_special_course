@@ -15,6 +15,8 @@ RUN pip install \
 # Change the working directory to YOLOv9
 WORKDIR /yolov9 
 
+COPY yolov9_special_course /yolov9
+
 RUN wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-c-converted.pt \
     -O ./weights/yolov9-c-converted.pt
 
@@ -23,8 +25,6 @@ RUN wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-t-co
 
 RUN wget http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip \
     -O ./new_data/Seaships.zip 
-
-COPY yolov9_special_course /yolov9
 
 RUN mkdir -p /yolov9/coco
 
