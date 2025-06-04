@@ -32,6 +32,11 @@ Models (Unfreezed, directly taken from the [source directory](https://github.com
 
 Install these Models into the ``./weights/`` folder within the system and use Model_unfreezing.ipynb to unfreeze the weights. (Normally, models are frozen after training)
 
+# TO DO
+Format the dataset to install it on the cluster
+Add the weights to the dockerfile installation
+Unfreeze the weights 
+#
 
 ## Training a Model on New Datasets
 ### Dataset Setup
