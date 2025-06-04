@@ -43,8 +43,8 @@ cd ./yolov9_special_course/new_data/
 
 
 # TO DO
-Format the dataset to install it on the cluster
-Add the weights to the dockerfile installation
+~~Format the dataset to install it on the cluster~~
+~~Add the weights to the dockerfile installation~~
 Unfreeze the weights 
 #
 
