@@ -6,12 +6,7 @@ The current instructions are for an ubuntu based system.
 # Go to a clean folder and start installations
 git clone https://github.com/Bot736382/yolov9_special_course.git
 
-cd yolov9_special_course
-
-# In the same repository, install the Dockerfile (This is already in the main repo.)
-mv Dockerfile ..
-
-cd ..
+mv ./yolov9_special_course/Dockerfile ./
 ```
 Once this is done, start building the docker container as follows:
 ``` shell
