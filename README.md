@@ -32,6 +32,17 @@ Models (Unfreezed, directly taken from the [source directory](https://github.com
 
 Install these Models into the ``./weights/`` folder within the system and use Model_unfreezing.ipynb to unfreeze the weights. (Normally, models are frozen after training)
 
+Install the Models: yolov9-c-converted, yolov9-t-converted and the [SeaShips Dataset](http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip)
+```
+wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-c-converted.pt -O ./weights/yolov9-c-converted.pt
+
+wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-t-converted.pt -O ./weights/yolov9-t.pt
+
+wget http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip -O ./new_data/Seaships.zip 
+```
+
+
+
 # TO DO
 Format the dataset to install it on the cluster
 Add the weights to the dockerfile installation
