@@ -21,7 +21,7 @@ docker build -t yolov9-image .
 # RUN THE CONTAINER
 nvidia-docker run --gpus all -it \
   -p 8888:8888 -p 6006:6006 \
-  -v ./yolov9_special_course:/yolov9_special_course \
+  -v ./yolov9_special_course:/yolov9 \
   --shm-size=64g \
   --name yolov9-container yolov9-image
 ```
