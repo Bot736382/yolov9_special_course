@@ -32,6 +32,26 @@ Models (Unfreezed, directly taken from the [source directory](https://github.com
 
 Install these Models into the ``./weights/`` folder within the system and use Model_unfreezing.ipynb to unfreeze the weights. (Normally, models are frozen after training)
 
-## Training
 
-## Validation
+## Training a Model on New Datasets
+### Dataset Setup
+Before initiating training yolov9 on new datasets, one must download the models from the [yolov9 original repository](https://github.com/WongKinYiu/yolov9). For the given tutorial, the author will be using the yolov9-c.pt model for retraining the parameters. 
+
+Required image file structure:
+### change the image to a better readme compatible filetype
+
+
+
+### Retraining
+We start of by running this. The new_data folder is basically a combination of the SeaShips dataset as can be found on: [SeaShips](http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip)
+``` shell
+python train_dual.py --workers 4 --device 0 --batch 8 --data new_data/seaships.yaml --cfg models/detect/yolov9-c.yaml --weights './weights/yolov9-c.pt' --name train2_new --min-items 0 --epochs 50 --close-mosaic 15
+```
+Once the model has been retrained, it is stored as ./runs/train/train2_new/best.pt. 
+
+### Evaluation
+This new model can be evaluated by:
+``` shell
+python val.py --data new_data/seaships.yaml --batch 2 --conf 0.001 --iou 0.7 --device 0 --weights './runs/train/OBS_10/weights/best.pt' --save-json --name OBS_10_eval
+```
+## Citations
