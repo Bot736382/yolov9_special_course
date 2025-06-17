@@ -32,14 +32,6 @@ Install the Models: yolov9-c-converted, yolov9-t-converted and the [SeaShips Dat
 wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-c-converted.pt -O ./yolov9_special_course/weights/yolov9-c-converted.pt
 
 wget https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-t-converted.pt -O ./yolov9_special_course/weights/yolov9-t.pt
-
-# Install the SeaShips Dataset.
-
-wget http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip -O ./yolov9_special_course/new_data/Seaships.zip 
-
-cd ./yolov9_special_course/new_data/
-
-./script.sh
 ```
 
 
@@ -59,9 +51,17 @@ Required image file structure:
 │   ├── train
 │   ├── val
 └── seaships.yaml
-
 </pre>
+```
+# Install the SeaShips Dataset.
 
+wget http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip -O ./yolov9_special_course/new_data/Seaships.zip 
+
+cd ./yolov9_special_course/new_data/
+
+# script modifies the contents of the SeaShips dataset to automatically format it into the required file structure.
+./script.sh
+```
 
 ### Retraining
 We start of by running this. The new_data folder is basically a combination of the SeaShips dataset as can be found on: [SeaShips](http://www.lmars.whu.edu.cn/prof_web/shaozhenfeng/datasets/SeaShips%287000%29.zip)
@@ -75,5 +75,6 @@ This new model can be evaluated by:
 ``` shell
 python val.py --data new_data/seaships.yaml --batch 2 --conf 0.001 --iou 0.7 --device 0 --weights './runs/train/OBS_10/weights/best.pt' --save-json --name OBS_10_eval
 ```
+
 ## Citations
 Su, L., Chen, Y., Song, H. et al. A survey of maritime vision datasets. _Multimed Tools Appl_ 82, 28873–28893 (2023). https://doi.org/10.1007/s11042-023-14756-9
