@@ -58,11 +58,8 @@ Required image file structure:
 │   └── val
 ├── labels
 │   ├── test
-│   ├── test.cache
 │   ├── train
-│   ├── train.cache
 │   ├── val
-│   └── val.cache
 └── seaships.yaml
 
 ```
