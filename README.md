@@ -43,20 +43,30 @@ cd ./yolov9_special_course/new_data/
 ```
 
 
-
-# TO DO
-~~Format the dataset to install it on the cluster~~
-~~Add the weights to the dockerfile installation~~
-Unfreeze the weights 
-#
-
 ## Training a Model on New Datasets
 ### Dataset Setup
 Before initiating training yolov9 on new datasets, one must download the models from the [yolov9 original repository](https://github.com/WongKinYiu/yolov9). For the given tutorial, the author will be using the yolov9-c.pt model for retraining the parameters. 
 
 Required image file structure:
 ### change the image to a better readme compatible filetype
+<pre>
+```
+.
+├── images
+│   ├── test
+│   ├── train
+│   └── val
+├── labels
+│   ├── test
+│   ├── test.cache
+│   ├── train
+│   ├── train.cache
+│   ├── val
+│   └── val.cache
+└── seaships.yaml
 
+```
+</pre>
 
 
 ### Retraining
