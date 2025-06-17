@@ -1,11 +1,12 @@
 import math
 import warnings
 from pathlib import Path
+import json
 
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-
+from collections import defaultdict
 from utils import TryExcept, threaded
 
 
@@ -125,8 +126,9 @@ class ConfusionMatrix:
         self.nc = nc  # number of classes
         self.conf = conf
         self.iou_thres = iou_thres
+        self.logs = []
 
-    def process_batch(self, detections, labels):
+    def process_batch(self, detections, labels,image_name=""):
         """
         Return intersection-over-union (Jaccard index) of boxes.
         Both sets of boxes are expected to be in (x1, y1, x2, y2) format.
@@ -140,12 +142,14 @@ class ConfusionMatrix:
             gt_classes = labels.int()
             for gc in gt_classes:
                 self.matrix[self.nc, gc] += 1  # background FN
+                self.logs.append((image_name, int(gc), None, None, "FN"))
             return
 
         detections = detections[detections[:, 4] > self.conf]
         gt_classes = labels[:, 0].int()
         detection_classes = detections[:, 5].int()
         iou = box_iou(labels[:, 1:], detections[:, :4])
+        # print('iou for prediction: ' + str(iou))  ### CHANGED LINE
 
         x = torch.where(iou > self.iou_thres)
         if x[0].shape[0]:
@@ -163,14 +167,23 @@ class ConfusionMatrix:
         for i, gc in enumerate(gt_classes):
             j = m0 == i
             if n and sum(j) == 1:
-                self.matrix[detection_classes[m1[j]], gc] += 1  # correct
+                pred_idx = m1[j][0]
+                pred_class = int(detection_classes[pred_idx])
+                pred_box = detections[pred_idx, :4].tolist()
+                result = "TP" if pred_class == gc else "Misclassified"
+                self.logs.append((image_name, int(gc), pred_class, pred_box, result))
+                self.matrix[pred_class, gc] += 1
             else:
+                self.logs.append((image_name, int(gc), None, None, "FN"))
                 self.matrix[self.nc, gc] += 1  # true background
 
         if n:
             for i, dc in enumerate(detection_classes):
                 if not any(m1 == i):
-                    self.matrix[dc, self.nc] += 1  # predicted background
+                    pred_box = detections[i, :4].tolist()
+                    pred_class = int(dc)
+                    self.logs.append((image_name, None, pred_class, pred_box, "FP"))
+                    self.matrix[pred_class, self.nc] += 1  # predicted background
 
     def matrix(self):
         return self.matrix
@@ -216,6 +229,26 @@ class ConfusionMatrix:
         for i in range(self.nc + 1):
             print(' '.join(map(str, self.matrix[i])))
             
+    
+    def print_logs(self):
+        count=0
+        for img_name, gt_class, pred_class, bbox, result in self.logs:
+            # print(count)
+            count+=1
+            # print(f"{img_name:20} | GT: {gt_class} | Pred: {pred_class} | BBox: {bbox} | Result: {result}")
+
+    def save_logs_to_json(self, file_path):
+        grouped_logs = defaultdict(list)
+        for img, gt, pred, bbox, res in self.logs:
+            grouped_logs[img].append({
+                "Image_name": img,
+                "gt_class": gt,
+                "pred_class": pred,
+                "bbox": bbox,
+                "result": res
+            })
+        with open(file_path, 'w') as f:
+            json.dump(grouped_logs, f, indent=4)
 
 class WIoU_Scale:
     ''' monotonous: {
