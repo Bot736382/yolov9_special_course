@@ -3,6 +3,7 @@ import json
 import os
 import sys
 from pathlib import Path
+import json
 
 import numpy as np
 import torch
@@ -37,7 +38,7 @@ def save_one_txt(predn, save_conf, shape, file):
 
 def save_one_json(predn, jdict, path, class_map):
     # Save one JSON result {"image_id": 42, "category_id": 18, "bbox": [258.15, 41.29, 348.26, 243.78], "score": 0.236}
-    image_id = int(path.stem) if path.stem.isnumeric() else path.stem
+    image_id = path.stem
     box = xyxy2xywh(predn[:, :4])  # xywh
     box[:, :2] -= box[:, 2:] / 2  # xy center to top-left corner
     for p, b in zip(predn.tolist(), box.tolist()):
@@ -45,8 +46,8 @@ def save_one_json(predn, jdict, path, class_map):
             'image_id': image_id,
             'category_id': class_map[int(p[5])],
             'bbox': [round(x, 3) for x in b],
-            'score': round(p[4], 5)})
-
+            'score': round(p[4], 5), 
+            '\n': ''})
 
 def process_batch(detections, labels, iouv):
     """
@@ -80,7 +81,7 @@ def run(
         batch_size=32,  # batch size
         imgsz=640,  # inference size (pixels)
         conf_thres=0.001,  # confidence threshold
-        iou_thres=0.7,  # NMS IoU threshold
+        iou_thres=0.95,  # NMS IoU threshold
         max_det=300,  # maximum detections per image
         task='val',  # train, val, test, speed or study
         device='',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
@@ -105,6 +106,7 @@ def run(
         callbacks=Callbacks(),
         compute_loss=None,
 ):
+    print('\n\niou_thres: '+str(iou_thres))
     # Initialize/load model and set device
     training = model is not None
     if training:  # called by train.py
@@ -164,7 +166,7 @@ def run(
                                        prefix=colorstr(f'{task}: '))[0]
 
     seen = 0
-    confusion_matrix = ConfusionMatrix(nc=nc)
+    confusion_matrix = ConfusionMatrix(nc=nc, iou_thres=iou_thres)
     names = model.names if hasattr(model, 'names') else model.module.names  # get class names
     if isinstance(names, (list, tuple)):  # old format
         names = dict(enumerate(names))
@@ -178,6 +180,7 @@ def run(
     pbar = tqdm(dataloader, desc=s, bar_format=TQDM_BAR_FORMAT)  # progress bar
     for batch_i, (im, targets, paths, shapes) in enumerate(pbar):
         callbacks.run('on_val_batch_start')
+        # print(paths)
         with dt[0]:
             if cuda:
                 im = im.to(device, non_blocking=True)
@@ -218,7 +221,7 @@ def run(
                 if nl:
                     stats.append((correct, *torch.zeros((2, 0), device=device), labels[:, 0]))
                     if plots:
-                        confusion_matrix.process_batch(detections=None, labels=labels[:, 0])
+                        confusion_matrix.process_batch(detections=None, labels=labels[:, 0],image_name=Path(paths[si]).name)
                 continue
 
             # Predictions
@@ -234,12 +237,14 @@ def run(
                 labelsn = torch.cat((labels[:, 0:1], tbox), 1)  # native-space labels
                 correct = process_batch(predn, labelsn, iouv)
                 if plots:
-                    confusion_matrix.process_batch(predn, labelsn)
+                    confusion_matrix.process_batch(predn, labelsn, image_name=str(Path(paths[si]).name))
             stats.append((correct, pred[:, 4], pred[:, 5], labels[:, 0]))  # (correct, conf, pcls, tcls)
 
             # Save/log
             if save_txt:
                 save_one_txt(predn, save_conf, shape, file=save_dir / 'labels' / f'{path.stem}.txt')
+                confusion_matrix.print_logs() 
+                confusion_matrix.save_logs_to_json(save_dir / 'labels.json')
             if save_json:
                 save_one_json(predn, jdict, path, class_map)  # append to COCO-JSON dictionary
             callbacks.run('on_val_image_end', pred, predn, path, names, im[si])
